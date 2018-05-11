@@ -3,7 +3,7 @@ API com CRUD de contatos para consumo no FRONT-END.
 
 Com implementação de POST, GET, PUT e DELETE de contatados com autenticação de usuário e validação de token.
 
-Siga o guia para clone.
+Siga o guia para utilização.
 1. `git clone https://github.com/JeffersonLG/contatos-API.git`
 2. `cd contatos-API`
 3. `npm install`
