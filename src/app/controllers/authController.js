@@ -37,7 +37,7 @@ router.post('/authenticate', async (req, res)=>{
       const user = await User.findOne({ email }).select('+password')
 
       if(!user)
-            return res.status(400).send({ error: 'User not Foud.' })
+            return res.status(400).send({ error: 'User not Foud....' })
       if( !await bcrypt.compare(password, user.password))
       return res.status(400).send({ error: 'Invalid Password.' })
       user.password = undefined
@@ -49,4 +49,4 @@ router.post('/authenticate', async (req, res)=>{
       })
 })
 
-module.exports = app => app.use('/auth', router)
+module.exports = app => app.use('/', router)
