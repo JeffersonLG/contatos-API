@@ -3,13 +3,17 @@ const express = require('express'),
       debug = require('debug')('api:server'),
       http = require('http'),
       bodyParser = require('body-parser'),
+      cors = require('cors'),
       router = express.Router()
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(cors());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Content-Type', 'application/json');
   next();
 });
 
@@ -20,6 +24,7 @@ const route = router.get('/', (req, res, next)=> {
     title: "API Lista de Contatos.",
     version: "1.0.2"
   })
+  
 })
 app.use('/', route)
 

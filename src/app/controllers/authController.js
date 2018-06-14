@@ -1,5 +1,5 @@
  const express = require('express'),
-       { User }  = require('../models/bdModel'),
+       User   = require('../models/userModel'),
        bcrypt = require('bcryptjs'),
        jwt = require('jsonwebtoken'),
        authConfig = require('../../config/auth.json')
@@ -11,12 +11,12 @@
             })
        }
 
-router.post('/register', async (req, res) =>{
+router.post('/register', async (req, res) => {
       const  { email } = req.body
       try {
             if(await User.findOne({ email }))
               return res.status(400).send({ error: 'The user already exists.' })
-            
+
               const user = await User.create(req.body)
 
               user.password = undefined
@@ -26,8 +26,8 @@ router.post('/register', async (req, res) =>{
                   token : genereteToken({ id: user.id })
             })
       } catch(err){
-            console.log(err);
-            
+            console.log(err)
+
             return res.status(400).send({error: 'Register Failed'})
       }
 });
@@ -38,7 +38,8 @@ router.post('/authenticate', async (req, res)=>{
 
       if(!user)
             return res.status(400).send({ error: 'User not Foud....' })
-      if( !await bcrypt.compare(password, user.password))
+      if( !await bcrypt.compare(password, user.password) || password === '')
+
       return res.status(400).send({ error: 'Invalid Password.' })
       user.password = undefined
 

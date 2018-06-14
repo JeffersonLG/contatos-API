@@ -1,16 +1,32 @@
+
 const express = require('express'),
       authMiddleware = require('../middleware/auth'),
-      { Contact } = require('../models/bdModel'),
-      router = express.Router()
-      
+      Contact = require('../models/contactsModel'),
+      User = require('../models/userModel'),
+      router = express.Router();
 
-router.use(authMiddleware)
 
-router.get('/', async (req, res)=>{
+router.use(authMiddleware);
+
+router.get('/', async (req, res, next)=> {
     try {
-        const contacts = await Contact.find().populate('user')
 
-        return res.send({ contacts })
+      const contacts  = await Contact.find().populate('user');
+
+        return res.send( contacts )
+        
+    } catch (err) {
+        return res.status(400).send({ error: 'Error fetching Contacts.' })
+    }
+})
+
+router.get('/byuser', async (req, res, next)=> {
+    try {
+
+      const contacts  = await Contact.find({userCreate: req.userId}).populate('user');
+
+        return res.send( contacts )
+        
     } catch (err) {
         return res.status(400).send({ error: 'Error fetching Contacts.' })
     }
@@ -20,7 +36,7 @@ router.get('/:contactId', async (req, res)=>{
     try {
         const contacts = await Contact.findById(req.params.contactId).populate('user')
 
-        return res.send({ contacts })
+        return res.send( contacts )
     } catch (err) {
         return res.status(400).send({ error: 'Error fetching Contact.' })
     }
@@ -66,5 +82,6 @@ router.delete('/:contactId', async (req, res)=>{
         return res.status(400).send({ error: 'Error Remove Contact.' })
     }
 })
+
 
 module.exports = app => app.use('/contacts', router)
